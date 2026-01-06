@@ -25,3 +25,25 @@ create table standings (
     UNIQUE (league_id, rank)   
 )
 select * from standings 
+
+
+
+INSERT INTO standings (
+    rank, league_id, name, pts, played, wins, draws, losses,
+    goals_for, goals_against, goals_diff
+)
+VALUES (
+    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+)
+ON CONFLICT (name)  -- name is primary key
+DO UPDATE SET
+    rank = EXCLUDED.rank,
+    league_id = EXCLUDED.league_id,
+    pts = EXCLUDED.pts,
+    played = EXCLUDED.played,
+    wins = EXCLUDED.wins,
+    draws = EXCLUDED.draws,
+    losses = EXCLUDED.losses,
+    goals_for = EXCLUDED.goals_for,
+    goals_against = EXCLUDED.goals_against,
+    goals_diff = EXCLUDED.goals_diff;
